@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a1a2f">
+  <title>LigaFácil — Campeonatos Amadores</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="cabecalho">
+    <div class="container barra">
+      <button class="marca" type="button" data-pagina="inicio" aria-label="Voltar ao início">
+        <span class="marca-icone">LF</span><span>Liga<span class="destaque">Fácil</span><small>FUTEBOL AMADOR</small></span>
+      </button>
+      <nav class="navegacao" aria-label="Menu principal">
+        <button class="nav-ativo" type="button" data-pagina="inicio">Início</button>
+        <button type="button" data-pagina="classificacao">Classificação</button>
+        <button type="button" data-pagina="jogos">Jogos</button>
+        <button type="button" data-pagina="equipes">Equipes</button>
+        <button type="button" data-pagina="admin">Administração</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="boas-vindas">
+      <div>
+        <span class="chamada">A SUA LIGA, EM UM SÓ LUGAR</span>
+        <h1>O futebol amador <span>mais organizado.</span></h1>
+        <p>Acompanhe campeonatos, resultados, classificação e os próximos confrontos.</p>
+      </div>
+      <div class="bola" aria-hidden="true">⚽</div>
+    </section>
+
+    <div class="seletor-campeonato">
+      <label for="campeonatoAtual">Campeonato selecionado</label>
+      <select id="campeonatoAtual"></select>
+    </div>
+
+    <div class="atualizacao"><span class="sinal-online" aria-hidden="true"></span><span id="statusAtualizacao">Conectando ao servidor…</span></div>
+    <div id="aviso" class="aviso escondido" role="status" aria-live="polite"></div>
+
+    <section id="pagina-inicio" class="pagina">
+      <div class="painel-titulo cabecalho-secao"><div><h2>Campeonatos disponíveis</h2><p class="texto-suave">Selecione uma competição para acompanhar os detalhes.</p></div></div>
+      <div id="campeonatosDisponiveis" class="cards-campeonatos"></div>
+      <div id="resumo" class="estatisticas"></div>
+      <div class="duas-colunas">
+        <section class="painel">
+          <div class="painel-titulo"><h2>Classificação</h2><button type="button" class="link-botao" data-pagina="classificacao">Ver completa →</button></div>
+          <div id="classificacaoResumo"></div>
+        </section>
+        <section class="painel">
+          <div class="painel-titulo"><h2>Próximos jogos</h2><button type="button" class="link-botao" data-pagina="jogos">Ver todos →</button></div>
+          <div id="proximosResumo"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="pagina-classificacao" class="pagina escondido">
+      <div class="titulo-pagina titulo-com-acoes"><div><h2>Tabela de classificação</h2><p>Atualizada automaticamente quando um resultado é registrado.</p></div><button id="exportarClassificacao" class="botao-secundario" type="button">Exportar CSV</button></div>
+      <div class="painel"><div id="classificacaoCompleta"></div><p class="legenda">P: pontos · J: jogos · V: vitórias · E: empates · D: derrotas · GP: gols pró · GC: gols contra · SG: saldo de gols.</p></div>
+    </section>
+
+    <section id="pagina-jogos" class="pagina escondido">
+      <div class="titulo-pagina"><h2>Partidas e resultados</h2><p>Acompanhe os jogos agendados e o histórico do campeonato.</p></div>
+      <div class="duas-colunas">
+        <div class="painel"><h3>Próximos jogos</h3><div id="proximosCompleto"></div></div>
+        <div class="painel"><h3>Histórico de resultados</h3><div id="resultadosCompletos"></div></div>
+      </div>
+      <div class="painel painel-pendentes"><h3>Partidas pendentes de resultado</h3><p class="texto-suave">Jogos com data passada e placar ainda não informado.</p><div id="pendentesCompletos"></div></div>
+    </section>
+
+    <section id="pagina-equipes" class="pagina escondido">
+      <div class="titulo-pagina"><h2>Equipes e jogadores</h2><p>Conheça os times inscritos no campeonato.</p></div>
+      <div id="listaEquipes" class="cards-equipes"></div>
+    </section>
+
+    <section id="pagina-admin" class="pagina escondido">
+      <div class="titulo-pagina"><h2>Painel administrativo</h2><p>Cadastre os campeonatos, as equipes, os jogadores e os resultados.</p></div>
+      <div id="loginArea" class="painel login-painel">
+        <div id="primeiroCadastro" class="escondido">
+          <h3>Configurar primeiro administrador</h3>
+          <p class="texto-suave">Primeiro acesso: crie uma conta. Não há senha padrão no sistema.</p>
+          <form id="formCadastroInicial" class="formulario">
+            <label>Usuário <input id="usuarioInicial" autocomplete="username" minlength="3" maxlength="40" pattern="[A-Za-z0-9_.-]{3,40}" required placeholder="organizador"></label>
+            <label>Senha (mínimo 10 caracteres) <input id="senhaInicial" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label>
+            <button class="botao-primario" type="submit">Criar administrador e entrar</button>
+          </form>
+          <p class="nota-seguranca">O primeiro cadastro deve ser realizado pelo responsável antes de disponibilizar o sistema na rede.</p>
+        </div>
+        <div id="loginExistente" class="escondido">
+          <h3>Acesso do organizador</h3>
+          <p class="texto-suave">Entre para gerenciar campeonatos, equipes, jogadores e resultados.</p>
+          <form id="formLogin" class="formulario">
+            <label>Usuário <input id="usuario" autocomplete="username" required></label>
+            <label>Senha <input id="senha" type="password" autocomplete="current-password" required></label>
+            <button class="botao-primario" type="submit">Entrar</button>
+          </form>
+        </div>
+      </div>
+      <div id="adminArea" class="escondido">
+        <div class="painel-titulo administracao-cabecalho"><div><strong>Gerenciar campeonato</strong><p class="texto-suave">Conectado como <span id="adminUsuarioAtual"></span>. Os dados ficam disponíveis para todos os visitantes.</p></div><div class="acoes-formulario"><button id="baixarBackup" type="button" class="botao-secundario">Baixar backup JSON</button><button id="sair" type="button" class="botao-secundario">Sair</button></div></div>
+        <div class="admin-grid">
+          <section class="painel"><h3>1. Campeonatos</h3>
+            <form id="formCampeonato" class="formulario">
+              <input id="campeonatoId" type="hidden">
+              <label>Nome do campeonato <input id="nomeCampeonato" required maxlength="80" placeholder="Ex.: Copa Municipal 2026"></label>
+              <label>Temporada <input id="temporada" type="number" min="2000" max="2100" required value="2026"></label>
+              <div class="acoes-formulario"><button class="botao-primario" type="submit">Salvar campeonato</button><button class="botao-secundario cancelar" type="button" data-form="Campeonato">Cancelar</button></div>
+            </form><div id="adminCampeonatos"></div>
+          </section>
+
+          <section class="painel"><h3>2. Equipes</h3>
+            <form id="formEquipe" class="formulario">
+              <input id="equipeId" type="hidden">
+              <label>Nome da equipe <input id="nomeEquipe" maxlength="80" required placeholder="Ex.: União FC"></label>
+              <label>Cidade <input id="cidadeEquipe" maxlength="70" placeholder="Ex.: Ijuí"></label>
+              <div class="acoes-formulario"><button class="botao-primario" type="submit">Salvar equipe</button><button class="botao-secundario cancelar" type="button" data-form="Equipe">Cancelar</button></div>
+            </form><div id="adminEquipes"></div>
+          </section>
+
+          <section class="painel"><h3>3. Jogadores</h3>
+            <form id="formJogador" class="formulario">
+              <input id="jogadorId" type="hidden">
+              <label>Nome do jogador <input id="nomeJogador" maxlength="80" required placeholder="Ex.: João Silva"></label>
+              <label>Equipe <select id="equipeJogador" required></select></label>
+              <label>Número da camisa <input id="camisaJogador" type="number" min="1" max="99" required></label>
+              <div class="acoes-formulario"><button class="botao-primario" type="submit">Salvar jogador</button><button class="botao-secundario cancelar" type="button" data-form="Jogador">Cancelar</button></div>
+            </form><div id="adminJogadores"></div>
+          </section>
+
+          <section class="painel"><h3>4. Partidas e resultados</h3>
+            <form id="formPartida" class="formulario">
+              <input id="partidaId" type="hidden">
+              <label>Mandante <select id="mandante" required></select></label>
+              <label>Visitante <select id="visitante" required></select></label>
+              <label>Data e horário <input id="dataPartida" type="datetime-local" required></label>
+              <label>Local <input id="localPartida" maxlength="100" placeholder="Ex.: Campo Municipal"></label>
+              <div class="placar-form"><label>Gols do mandante <input id="golsMandante" type="number" min="0" max="99" placeholder="—"></label><label>Gols do visitante <input id="golsVisitante" type="number" min="0" max="99" placeholder="—"></label></div>
+              <p class="texto-suave">Deixe os dois placares em branco para agendar; preencha ambos para finalizar.</p>
+              <div class="acoes-formulario"><button class="botao-primario" type="submit">Salvar partida</button><button class="botao-secundario cancelar" type="button" data-form="Partida">Cancelar</button></div>
+            </form><div id="adminPartidas"></div>
+          </section>
+        </div>
+        <section class="painel painel-administradores">
+          <h3>5. Cadastrar outro administrador</h3>
+          <p class="texto-suave">Apenas quem já está autenticado pode criar novas contas. Utilize senhas individuais.</p>
+          <form id="formNovoAdmin" class="formulario formulario-curto">
+            <label>Novo usuário <input id="novoUsuario" autocomplete="off" minlength="3" maxlength="40" pattern="[A-Za-z0-9_.-]{3,40}" required placeholder="novo.organizador"></label>
+            <label>Senha inicial (mínimo 10 caracteres) <input id="novaSenha" type="password" autocomplete="new-password" minlength="10" maxlength="128" required></label>
+            <button class="botao-primario" type="submit">Cadastrar administrador</button>
+          </form>
+        </section>
+        <div class="nota-seguranca">Os registros são centralizados no servidor SQLite. Para disponibilizar o sistema na internet, configure HTTPS, controle de acesso ao servidor e backups do banco.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">LigaFácil · Sistema acadêmico de gestão esportiva · Versão 2.0</footer>
+  <script src="script.js"></script>
+</body>
+</html>
